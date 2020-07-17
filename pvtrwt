@@ -10,7 +10,7 @@ try:
 except ImportError:
     from urlparse import urlunparse
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 def init_params(has_stdin):
     description_ext = "Private Rewrite transforms YouTube and Twitter links into their more privacy-friendly Invidio.us and Nitter.net versions."
