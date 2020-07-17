@@ -7,7 +7,7 @@ You can use `-o` to directly open the URL in your default browser, or you can cl
 
 ## Requirements
 
-* Python 3
+* Python
 
 ## Installing
 
