@@ -9,7 +9,7 @@ You can use `-o` to directly open the URL in your default browser, or you can cl
 
 * Python
 
-## Installing
+## Installation
 
 [Get the latest release](https://github.com/VeryBadFrags/pvtrwt/releases)
 
@@ -48,3 +48,7 @@ https://invidio.us/watch?v=YbJOTdZBX1g
 ```shell
 $ pvtrwt -u "youtube.com/watch?v=dQw4w9WgXcQ" -o
 ```
+
+## Source Code
+
+<https://github.com/VeryBadFrags/pvtrwt>

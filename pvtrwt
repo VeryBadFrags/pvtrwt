@@ -10,7 +10,7 @@ try:
 except ImportError:
     from urlparse import urlunparse
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 rewrite_rules = [('youtube.com','invidio.us'), ('youtu.be/','invidio.us/watch?v='), ('twitter.com', 'nitter.net')]
 
@@ -20,12 +20,12 @@ def init_params(has_stdin):
     # Initiate the parser
     parser = argparse.ArgumentParser(description=description_ext)
     parser.add_argument(
-        "-c", "--clean", help="Clean the input URL", action="store_true")
+        "-c", "--clean", help="Clean/format the output URL", action="store_true")
     # TODO -f for input file
     parser.add_argument(
         "-o", "--open", help="Open the url in the default browser", action="store_true")
     parser.add_argument(
-        "-u", "--url", help="Specify the URL to handle (can be replaced by STDIN) ")
+        "-u", "--url", help="Specify the URL to process")
     parser.add_argument(
         "-V", "--verbose", help="Verbose outputs", action="store_true")
     parser.add_argument(
@@ -41,7 +41,7 @@ def rewrite_url(input_url):
     output_url = ''
     for rule_url in rewrite_rules:
         if rule_url[0] in input_lower:
-            output_url = re.sub(rule_url[0], rule_url[1], output_url, flags=re.IGNORECASE)
+            output_url = re.sub(rule_url[0], rule_url[1], input_url, flags=re.IGNORECASE)
             break
 
     return output_url
@@ -52,7 +52,8 @@ def clean_url(raw_url):
     if "http" in raw_url:
         return raw_url
     else:
-        return urlunparse(("https", raw_url, "", "", "", ""))
+        clear_url = urlunparse(("https", raw_url, "", "", "", ""))
+        return clear_url
 
 
 def open_link(args, raw_url):
@@ -110,7 +111,7 @@ def main():
             process_url(args, line.rstrip())
     else:
         if not args.url:
-            print("pvtrwt: error: argument -u/--url is required")
+            print("Missing URL (\"pvtrwt --help\" for help)")
             return 1
         input_url = args.url
         process_url(args, input_url)
