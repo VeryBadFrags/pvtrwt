@@ -13,7 +13,7 @@ You can use `-o` to directly open the URL in your default browser, or you can cl
 
 ## Installing
 
-[Get the latest release](https://github.com/VeryBadFrags/pvtrwt/releases).
+[Get the latest release](https://github.com/VeryBadFrags/pvtrwt/releases)
 
 ```shell
 python setup.py install
@@ -23,6 +23,16 @@ python setup.py install
 
 ```shell
 pvtrwt -h
+```
+
+```
+optional arguments:
+  -h, --help         show this help message and exit
+  -c, --clean        Clean the input URL
+  -o, --open         Open the url in the default browser
+  -u URL, --url URL  Specify the URL to handle (can be replaced by STDIN)
+  -V, --verbose      Verbose outputs
+  -v, --version      Print the version and exit
 ```
 
 ## Samples
