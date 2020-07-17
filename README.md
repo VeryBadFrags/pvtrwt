@@ -1,6 +1,4 @@
-# pvtrwt
-
-Work in progress.
+# Private Rewrite
 
 Private Rewrite is a Python script that transforms URLs from YouTube and Twitter into their more privacy-friendly equivalents Invidio.us and Nitter.net.
 This is somewhat similar to what [Invidition](https://addons.mozilla.org/en-US/firefox/addon/invidition/) does in Firefox.

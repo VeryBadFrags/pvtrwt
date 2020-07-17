@@ -4,6 +4,7 @@ import fileinput
 import argparse
 import os
 import sys
+import re
 try:
     from urllib.parse import urlunparse
 except ImportError:
@@ -32,16 +33,22 @@ def init_params(has_stdin):
 
 
 def rewrite_url(input_url):
-    # TODO rewrite with a static list of possible urls for YouTube and Twitter
-    # TODO ignore case
-    output_url = ''
-    if "youtube.com" in input_url:
-        output_url = input_url.replace('youtube.com', 'invidio.us')
-    elif "youtu.be" in input_url:
-        # TODO need to respect existing params like ?t=
-        output_url = input_url.replace('youtu.be/', 'invidio.us/watch?v=')
-    elif "twitter.com" in input_url:
-        output_url = input_url.replace('twitter.com', 'nitter.net')
+    # TODO need to respect existing params like ?t=
+    youtube_urls = [('youtube.com','invidio.us'), ('youtu.be/','invidio.us/watch?v=')]
+    twitter_urls = [('twitter.com', 'nitter.net')]
+    input_lower = input_url.lower()
+
+    output_url = input_url
+    # YouTube
+    for yt_url in youtube_urls:
+        if yt_url[0] in input_lower:
+            output_url = re.sub(yt_url[0], yt_url[1], output_url, flags=re.IGNORECASE)
+    
+    # Twitter
+    for twt_url in twitter_urls:
+        if twt_url[0] in input_lower:
+            output_url = re.sub(twt_url[0], twt_url[1], output_url, flags=re.IGNORECASE)
+
     return output_url
 
 
