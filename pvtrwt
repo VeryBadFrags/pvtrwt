@@ -9,6 +9,7 @@ try:
 except ImportError:
     from urlparse import urlunparse
 
+__version__ = '0.0.1'
 
 def init_params(has_stdin):
     description_ext = "Private Rewrite transforms YouTube and Twitter links into their more privacy-friendly Invidio.us and Nitter.net versions."
@@ -20,9 +21,11 @@ def init_params(has_stdin):
     parser.add_argument(
         "-o", "--open", help="Open the url in the default browser", action="store_true")
     parser.add_argument(
-        "-u", "--url", help="Specify the URL to handle (can be replaced by STDIN) ", required=not has_stdin)
+        "-u", "--url", help="Specify the URL to handle (can be replaced by STDIN) ")
     parser.add_argument(
-        "-v", "--verbose", help="Verbose outputs", action="store_true")
+        "-V", "--verbose", help="Verbose outputs", action="store_true")
+    parser.add_argument(
+        "-v", "--version", help="Print the version and exit", action="store_true")
     # TODO -f for input file
 
     return parser.parse_args()
@@ -94,11 +97,18 @@ def main():
     has_stdin = not sys.stdin.isatty()
     args = init_params(has_stdin)
 
+    if args.version:
+        print(__version__)
+        exit(0)
+
     input_url = ''
     if has_stdin:
         for line in sys.stdin:
             process_url(args, line.rstrip())
     else:
+        if not args.url:
+            print("pvtrwt: error: argument -u/--url is required")
+            exit(1)
         input_url = args.url
         process_url(args, input_url)
 

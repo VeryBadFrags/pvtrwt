@@ -5,7 +5,9 @@ Private Rewrite is a script that transforms URLs from YouTube and Twitter to the
 
 ## Installing
 
-TODO
+```shell
+cp pvtrwt /usr/local/bin/
+```
 
 ## Documentation
 
