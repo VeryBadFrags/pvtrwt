@@ -21,12 +21,14 @@ def init_params(has_stdin):
         "-u", "--url", help="Specify the URL to handle (can be replaced by STDIN) ", required=not has_stdin)
     parser.add_argument(
         "-v", "--verbose", help="Verbose outputs", action="store_true")
+    # TODO -f for input file
 
     return parser.parse_args()
 
 
 def rewrite_url(input_url):
     # TODO rewrite with a static list of possible urls for YouTube and Twitter
+    # TODO ignore case
     output_url = ''
     if "youtube.com" in input_url:
         output_url = input_url.replace('youtube.com', 'invidio.us')
@@ -63,7 +65,7 @@ def open_link(args, raw_url):
         if args.verbose:
             print("The --open option is not supported on your system")
         return
-        
+
     if args.verbose:
         print("Running command: " + exec_command)
     os.system(exec_command)
@@ -95,7 +97,7 @@ def main():
         for line in sys.stdin:
             process_url(args, line.rstrip())
     else:
-        input_url = args.url.lower()
+        input_url = args.url
         process_url(args, input_url)
 
     return 0
