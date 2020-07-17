@@ -1,0 +1,105 @@
+import fileinput
+import argparse
+import os
+import sys
+try:
+    from urllib.parse import urlunparse
+except ImportError:
+    from urlparse import urlunparse
+
+
+def init_params(has_stdin):
+    description_ext = "Private Rewrite transforms YouTube and Twitter links into their more privacy-friendly Invidio.us and Nitter.net versions."
+
+    # Initiate the parser
+    parser = argparse.ArgumentParser(description=description_ext)
+    parser.add_argument(
+        "-c", "--clean", help="Clean the input URL", action="store_true")
+    parser.add_argument(
+        "-o", "--open", help="Open the url in the default browser", action="store_true")
+    parser.add_argument(
+        "-u", "--url", help="Specify the URL to handle (can be replaced by STDIN) ", required=not has_stdin)
+    parser.add_argument(
+        "-v", "--verbose", help="Verbose outputs", action="store_true")
+
+    return parser.parse_args()
+
+
+def rewrite_url(input_url):
+    # TODO rewrite with a static list of possible urls for YouTube and Twitter
+    output_url = ''
+    if "youtube.com" in input_url:
+        output_url = input_url.replace('youtube.com', 'invidio.us')
+    elif "youtu.be" in input_url:
+        output_url = input_url.replace('youtu.be', 'invidio.us')
+    elif "twitter.com" in input_url:
+        output_url = input_url.replace('twitter.com', 'nitter.net')
+    return output_url
+
+
+def clean_url(raw_url):
+    # TODO regex to grab the URL part only
+    if "http" in raw_url:
+        return raw_url
+    else:
+        return urlunparse(("https", raw_url, "", "", "", ""))
+
+
+def open_link(args, raw_url):
+    if(args.clean):
+        # The url is already clean
+        clear_url = raw_url
+    else:
+        clear_url = clean_url(raw_url)
+
+    exec_command = ''
+    if sys.platform == "linux" or sys.platform == "linux2":
+        exec_command = "xdg-open " + clear_url
+    elif sys.platform == "darwin":
+        exec_command = "open " + clear_url
+    elif sys.platform == "win32":
+        exec_command = "start " + clear_url
+    else:
+        if args.verbose:
+            print("The --open option is not supported on your system")
+        return
+        
+    if args.verbose:
+        print("Running command: " + exec_command)
+    os.system(exec_command)
+
+
+def process_url(args, input_url):
+    private_url = rewrite_url(input_url)
+
+    if not private_url:
+        if args.verbose:
+            print("Cannot process URL '" + input_url + "'")
+        return
+
+    if(args.clean):
+        private_url = clean_url(private_url)
+
+    print(private_url)
+
+    if args.open:
+        open_link(args, private_url)
+
+
+def main():
+    has_stdin = not sys.stdin.isatty()
+    args = init_params(has_stdin)
+
+    input_url = ''
+    if has_stdin:
+        for line in sys.stdin:
+            process_url(args, line.rstrip())
+    else:
+        input_url = args.url.lower()
+        process_url(args, input_url)
+
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
