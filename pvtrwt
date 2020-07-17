@@ -108,7 +108,7 @@ def main():
     else:
         if not args.url:
             print("pvtrwt: error: argument -u/--url is required")
-            exit(1)
+            return 1
         input_url = args.url
         process_url(args, input_url)
 

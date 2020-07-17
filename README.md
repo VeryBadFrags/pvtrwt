@@ -24,7 +24,7 @@ https://nitter.net/twitter
 
 ```shell
 $ echo "youtu.be/YbJOTdZBX1g" | pvtrwt -c
-https://invidio.us/YbJOTdZBX1g
+https://invidio.us/watch?v=YbJOTdZBX1g
 ```
 
 ```shell
