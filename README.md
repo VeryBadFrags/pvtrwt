@@ -38,12 +38,8 @@ https://nitter.net/Twitter
 ```
 
 ```shell
-$ echo "youtu.be/YbJOTdZBX1g" | pvtrwt -c
+$ echo "youtu.be/dQw4w9WgXcQ" | pvtrwt -c
 https://invidio.us/watch?v=YbJOTdZBX1g
-```
-
-```shell
-$ pvtrwt -u "youtube.com/watch?v=dQw4w9WgXcQ" -o
 ```
 
 ## Source Code
