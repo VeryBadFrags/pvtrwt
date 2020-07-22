@@ -2,7 +2,6 @@
 
 import fileinput
 import argparse
-import os
 import sys
 import re
 try:
@@ -10,20 +9,17 @@ try:
 except ImportError:
     from urlparse import urlunparse
 
-__version__ = '0.1.2'
+__version__ = '0.2.0'
 
 rewrite_rules = [('youtube.com','invidio.us'), ('youtu.be/','invidio.us/watch?v='), ('twitter.com', 'nitter.net')]
+description_ext = "Private Rewrite transforms YouTube and Twitter links into their more privacy-friendly Invidio.us and Nitter.net versions."
 
 def init_params(has_stdin):
-    description_ext = "Private Rewrite transforms YouTube and Twitter links into their more privacy-friendly Invidio.us and Nitter.net versions."
-
     # Initiate the parser
     parser = argparse.ArgumentParser(description=description_ext)
     parser.add_argument(
         "-c", "--clean", help="Clean/format the output URL", action="store_true")
     # TODO -f for input file
-    parser.add_argument(
-        "-o", "--open", help="Open the url in the default browser", action="store_true")
     parser.add_argument(
         "-u", "--url", help="Specify the URL to process")
     parser.add_argument(
@@ -48,36 +44,11 @@ def rewrite_url(input_url):
 
 
 def clean_url(raw_url):
-    # TODO regex to grab the URL part only
     if "http" in raw_url:
         return raw_url
     else:
         clear_url = urlunparse(("https", raw_url, "", "", "", ""))
         return clear_url
-
-
-def open_link(args, raw_url):
-    if(args.clean):
-        # The url is already clean
-        clear_url = raw_url
-    else:
-        clear_url = clean_url(raw_url)
-
-    exec_command = ''
-    if sys.platform == "linux" or sys.platform == "linux2":
-        exec_command = "xdg-open " + clear_url
-    elif sys.platform == "darwin":
-        exec_command = "open " + clear_url
-    elif sys.platform == "win32":
-        exec_command = "start " + clear_url
-    else:
-        if args.verbose:
-            print("The --open option is not supported on your system")
-        return
-
-    if args.verbose:
-        print("Running command: " + exec_command)
-    os.system(exec_command)
 
 
 def process_url(args, input_url):
@@ -92,10 +63,6 @@ def process_url(args, input_url):
         private_url = clean_url(private_url)
 
     print(private_url)
-
-    if args.open:
-        open_link(args, private_url)
-
 
 def main():
     has_stdin = not sys.stdin.isatty()
